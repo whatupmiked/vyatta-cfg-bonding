@@ -7,6 +7,7 @@ yangdir = /usr/share/configd/yang
 techsprtdir = $(datadir)/vyatta-op/functions/tech-support.d
 
 bin_SCRIPTS = scripts/vyatta-show-bonding
+bin_SCRIPTS += scripts/show_lacp
 sbin_SCRIPTS = scripts/vyatta-bonding
 sysconf_DATA =
 share_perl5_DATA = lib/Vyatta/Bonding.pm
