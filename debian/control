@@ -58,3 +58,11 @@ Architecture: all
 Depends: ${misc:Depends}, ${yang:Depends}, vyatta-interfaces-base, vyatta-interfaces-bonding
 Description: vyatta-op-show-interfaces-bonding-v1 module
  Operational mode integration for viewing bonding interface configuration
+
+Package: vyatta-op-show-lacp-v1-yang
+Architecture: all
+Depends: ${misc:Depends}, ${yang:Depends},
+ libteam-utils (>= 1.11-1vyatta18),
+ vplane-config (>> 2.19)
+Description: vyatta-op-show-lacp-v1 module
+ Operational mode integration for viewing LACP state information

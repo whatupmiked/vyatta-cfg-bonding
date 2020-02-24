@@ -1,0 +1,35 @@
+module vyata-op-show-lacp-v1 {
+    namespace "urn:vyatta.com:mgmt:vyatta-op-show-lacp:1";
+    prefix vyatta-op-show-lacp-v1;
+
+    import vyatta-opd-extensions-v1 {
+        prefix opd;
+    }
+    import vyatta-op-show-v1 {
+        prefix show;
+    }
+
+    description
+        "Defined the 'lacp' level under the top level 'show' for operational CLI";
+
+    revision 2020-02-24 {
+        description "Initial version";
+    }
+
+    opd:augment /show:show {
+        opd:command lacp {
+            opd:help "Show LACP information";
+
+            opd:command detail {
+                opd:help "Show detailed LACP information";
+                opd:on-enter "/opt/vyatta/bin/show_lacp --detail";
+                opd:privileged true;
+            }
+            opd:command statistics {
+                opd:help "Show LACP statistics";
+                opd:on-enter "/opt/vyatta/bin/show_lacp --stats";
+                opd:privileged true;
+            }
+        }
+    }
+}
