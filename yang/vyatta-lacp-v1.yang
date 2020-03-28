@@ -114,7 +114,7 @@ module vyatta-lacp-v1 {
             type string;
         }
 
-        leaf dp_lacp {
+        leaf lacp {
             description "Is LACP running on this lag";
             type boolean;
         }
@@ -166,17 +166,22 @@ module vyatta-lacp-v1 {
     }
 
     grouping lacp-port-state {
-        leaf master {
-            type boolean;
+        leaf dp_master {
+            type types:interface-ifname;
             description "";
         }
 
         leaf version {
-            type boolean;
+            type lacp:lacp-version;
             description "";
         }
 
-        leaf active {
+        leaf dp_lacp {
+            description "Is LACP running on this lag";
+            type boolean;
+        }
+
+        leaf dp_active {
             type boolean;
             description "";
         }
@@ -221,6 +226,11 @@ module vyatta-lacp-v1 {
             description "";
         }
 
+        leaf dp_actor_state {
+            type lacp:actor-state;
+            description "";
+        }
+
         leaf partner_sys_prio {
             type lacp:partner-system-priority;
             description "";
@@ -247,6 +257,11 @@ module vyatta-lacp-v1 {
         }
 
         leaf partner_state {
+            type lacp:partner-state;
+            description "";
+        }
+
+        leaf dp_partner_state {
             type lacp:partner-state;
             description "";
         }
