@@ -22,13 +22,6 @@ module vyatta-lacp-v1 {
         prefix sys;
     }
 
-    organization "AT&T Inc.";
-    contact
-        "AT&T
-        Postal: 208 S. Akard Street
-        Dallas, TX 75202
-        Web: www.att.com";
-
     description
         "
         The YANG module for vyatta-lacp-v1.
@@ -38,7 +31,7 @@ module vyatta-lacp-v1 {
         description "Initial revision";
     }
 
-    augment /lacp:lacp {
+    augment /if:interfaces {
         container lacp-lags-state {
             config false;
             configd:get-state "show_lacp --json";
@@ -57,7 +50,7 @@ module vyatta-lacp-v1 {
 
     grouping lacp-lag-state {
         leaf mode {
-            decription "";
+            description "";
             type string;
         }
 
@@ -67,48 +60,48 @@ module vyatta-lacp-v1 {
         }
 
         leaf lacp {
-            decription "Is LACP running on this lag";
+            description "Is LACP running on this lag";
             type boolean;
         }
 
         leaf hash_alg {
-            decription "The hashing algorithm used by the dataplane for this lag";
+            description "The hashing algorithm used by the dataplane for this lag";
             type string;
         }
 
         leaf active {
-            decription "";
+            description "";
             type boolean;
         }
 
         leaf team_mode {
-            decription "The teamd team-mode for this lag";
+            description "The teamd team-mode for this lag";
             type string;
         }
 
         leaf controller {
-            decription "The teamd controller used for this lag";
+            description "The teamd controller used for this lag";
             type string;
         }
 
         leaf link_watch {
-            decription "The teamd link_watch type used for this lag";
+            description "The teamd link_watch type used for this lag";
             type string;
         }
 
         leaf-list tx_hash {
             type string;
-            decription "";
+            description "";
         }
 
         leaf sys_prio {
             type lacp:system-priority;
-            decription "";
+            description "";
         }
 
         list slaves {
             description "";
-            key "name";
+            key name;
             leaf name {
                 description "Interface name associated with LACP link aggregation group";
                 type types:interface-ifname;
@@ -174,7 +167,7 @@ module vyatta-lacp-v1 {
         }
 
         leaf partner_sys_prio {
-            type lacp:parter-system-priority;
+            type lacp:partner-system-priority;
             description "";
         }
 

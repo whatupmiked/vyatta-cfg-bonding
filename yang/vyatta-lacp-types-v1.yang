@@ -6,6 +6,15 @@ module vyatta-lacp-types-v1 {
         prefix types;
     }
 
+    description
+        "
+        The YANG module for vyatta-lacp-v1.
+        This module provides configd infrastructure for lacp state";
+
+    revision 2020-03-26 {
+        description "Initial revision";
+    }
+
     typedef lacp-system-id {
         type types:mac-address;
         description "An LACP system id which takes the form of an MAC address";
@@ -27,25 +36,27 @@ module vyatta-lacp-types-v1 {
     }
 
     typedef lacp-version {
-        type uint8;
-        range "1 | 2";
+        type uint8 {
+        	range "1 .. 2";
+		}
         description "The LACP Version number";
     }
 
     typedef lacp-state {
-        type string;
-        length "8";
-        pattern "[\*E][\*F][\*D][\*C][\*S][\*G][sL][AP]"
-        description "A summary of the LACP port state"
+        type string {
+			length "8";
+			pattern "[\*E][\*F][\*D][\*C][\*S][\*G][sL][AP]";
+		}
+        description "A summary of the LACP port state";
     }
 
     typedef system-priority {
-        typedef lacp-priority;
+        type lacp-priority;
         description "The LACP system priority";
     }
 
     typedef port-priority {
-        typedef lacp-priority;
+        type lacp-priority;
         description "The LACP port priority";
     }
 
@@ -79,6 +90,11 @@ module vyatta-lacp-types-v1 {
         description "The LACP system id for the actor system";
     }
 
+    typedef actor-system-priority {
+        type system-priority;
+        description "The LACP system priority for the actor system";
+    }
+
     typedef partner-priority {
         type lacp-priority;
         description "The LACP priority for the partner system";
@@ -110,7 +126,7 @@ module vyatta-lacp-types-v1 {
     }
 
     typedef partner-system-priority {
-        type lacp-system-priority;
+        type system-priority;
         description "The LACP system priority for the partner system";
     }
 
