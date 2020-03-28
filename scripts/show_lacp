@@ -17,6 +17,13 @@ __LACP_HDR__ = "E = Expired, F = Defaulted, D = Distributing, " + \
                "G = Aggregating, A = Active, P = Passive," + \
                "s = Short Timeout, L = Long Timeout"
 
+class GenericJsonEncoder(json.JSONEncoder):
+    """
+    A generic Json Encoder
+    """
+    def default(self, obj):
+        return obj.__dict__
+
 class Interface:
     '''A generic class for a dataplane Interface'''
     def __init__(self, ifconfig):
@@ -74,6 +81,7 @@ class Lag(Interface):
         else:
             self.slaves = [LagPort(ifconfigs[x["ifname"]], x, self.name, "") \
                                 for x in lag["slaves"]]
+
     def team_state_print(self):
         '''Print the Lag Teamd State'''
         state = "{: <16} System Priority: ".format("")
@@ -329,6 +337,7 @@ def main():
             action="store_true")
     parser.add_argument("-s", "--stats", help="Show LACP statistics", \
             action="store_true")
+    parser.add_argument("-j", "--json", action="store_true", default=False)
     args = parser.parse_args()
     # Form a dictionary comprehension of the dataplane
     # ifconfig where lag['ifname'] is the key and use this
@@ -362,6 +371,10 @@ def main():
                 else:
                     ifcfgs[slave_name] = slave_name
             lags.append(Lag(ifcfgs, lag))
+
+    if args.json:
+        print(json.dumps({'lags' : lags}, cls=GenericJsonEncoder))
+        return
     # show-lacp-detail
     if args.detail:
         for lag in lags:

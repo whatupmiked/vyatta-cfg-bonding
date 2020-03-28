@@ -1,0 +1,117 @@
+module vyatta-lacp-types-v1 {
+	namespace "urn:vyatta.com:mgmt:vyatta-lacp-types:1";
+	prefix vyatta-lacp-types-v1;
+
+    import vyatta-types-v1 {
+        prefix types;
+    }
+
+    typedef lacp-system-id {
+        type types:mac-address;
+        description "An LACP system id which takes the form of an MAC address";
+    }
+
+    typedef lacp-port-id {
+        type uint16;
+        description "An LACP port id in the range 0 - 65535";
+    }
+
+    typedef lacp-priority {
+        type uint16;
+        description "An LACP priority value in the range 0 - 65535";
+    }
+
+    typedef lacp-key {
+        type uint16;
+        description "An LACP key value in the range 0 - 65535";
+    }
+
+    typedef lacp-version {
+        type uint8;
+        range "1 | 2";
+        description "The LACP Version number";
+    }
+
+    typedef lacp-state {
+        type string;
+        length "8";
+        pattern "[\*E][\*F][\*D][\*C][\*S][\*G][sL][AP]"
+        description "A summary of the LACP port state"
+    }
+
+    typedef system-priority {
+        typedef lacp-priority;
+        description "The LACP system priority";
+    }
+
+    typedef port-priority {
+        typedef lacp-priority;
+        description "The LACP port priority";
+    }
+
+    typedef actor-priority {
+        type lacp-priority;
+        description "The LACP priority for the actor system";
+    }
+
+    typedef actor-key {
+        type lacp-key;
+        description "The LACP key for the actor system";
+    }
+
+    typedef actor-port-id {
+        type lacp-port-id;
+        description "The LACP port id for the actor system";
+    }
+
+    typedef actor-port-priority {
+        type lacp-priority;
+        description "The LACP port priority for the actor system";
+    }
+
+    typedef actor-state {
+        type lacp-state;
+        description "The LACP state for the actor system";
+    }
+
+    typedef actor-system-id {
+        type lacp-system-id;
+        description "The LACP system id for the actor system";
+    }
+
+    typedef partner-priority {
+        type lacp-priority;
+        description "The LACP priority for the partner system";
+    }
+
+    typedef partner-key {
+        type lacp-key;
+        description "The LACP key for the partner system";
+    }
+
+    typedef partner-port-id {
+        type lacp-port-id;
+        description "The LACP port id for the partner system";
+    }
+
+    typedef partner-port-priority {
+        type lacp-priority;
+        description "The LACP port priority for the partner system";
+    }
+
+    typedef partner-state {
+        type lacp-state;
+        description "The LACP state for the partner system";
+    }
+
+    typedef partner-system-id {
+        type lacp-system-id;
+        description "The LACP system id for the partner system";
+    }
+
+    typedef partner-system-priority {
+        type lacp-system-priority;
+        description "The LACP system priority for the partner system";
+    }
+
+}

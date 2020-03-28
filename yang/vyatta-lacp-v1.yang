@@ -1,0 +1,266 @@
+module vyatta-lacp-v1 {
+    namespace "urn:vyatta.com:mgmt:vyatta-lacp:1";
+    prefix vyatta-lacp-v1;
+
+    import vyatta-lacp-types-v1 {
+        prefix lacp;
+    }
+
+    import configd-v1 {
+        prefix configd;
+    }
+
+    import vyatta-types-v1 {
+        prefix types;
+    }
+
+    import vyatta-interfaces-v1 {
+        prefix if;
+    }
+
+    import vyatta-system-v1 {
+        prefix sys;
+    }
+
+    organization "AT&T Inc.";
+    contact
+        "AT&T
+        Postal: 208 S. Akard Street
+        Dallas, TX 75202
+        Web: www.att.com";
+
+    description
+        "
+        The YANG module for vyatta-lacp-v1.
+        This module provides configd infrastructure for lacp state";
+
+    revision 2020-03-26 {
+        description "Initial revision";
+    }
+
+    augment /lacp:lacp {
+        container lacp-lags-state {
+            config false;
+            configd:get-state "show_lacp --json";
+            description "Operational state for LACP lags";
+
+            list lags {
+                key name;
+                leaf name {
+                    description "Interface name associated with LACP link aggregation group";
+                    type types:interface-ifname;
+                }
+                uses lacp-lag-state;
+            }
+        }
+    }
+
+    grouping lacp-lag-state {
+        leaf mode {
+            decription "";
+            type string;
+        }
+
+        leaf fast_rate {
+            description "The LACPDU rate timer advertised to partner";
+            type string;
+        }
+
+        leaf lacp {
+            decription "Is LACP running on this lag";
+            type boolean;
+        }
+
+        leaf hash_alg {
+            decription "The hashing algorithm used by the dataplane for this lag";
+            type string;
+        }
+
+        leaf active {
+            decription "";
+            type boolean;
+        }
+
+        leaf team_mode {
+            decription "The teamd team-mode for this lag";
+            type string;
+        }
+
+        leaf controller {
+            decription "The teamd controller used for this lag";
+            type string;
+        }
+
+        leaf link_watch {
+            decription "The teamd link_watch type used for this lag";
+            type string;
+        }
+
+        leaf-list tx_hash {
+            type string;
+            decription "";
+        }
+
+        leaf sys_prio {
+            type lacp:system-priority;
+            decription "";
+        }
+
+        list slaves {
+            description "";
+            key "name";
+            leaf name {
+                description "Interface name associated with LACP link aggregation group";
+                type types:interface-ifname;
+            }
+            uses lacp-port-state;
+        }
+    }
+
+    grouping lacp-port-state {
+        leaf master {
+            type boolean;
+            description "";
+        }
+
+        leaf version {
+            type boolean;
+            description "";
+        }
+
+        leaf active {
+            type boolean;
+            description "";
+        }
+
+        leaf primary {
+            type boolean;
+            description "";
+        }
+
+        leaf prio {
+            type lacp:port-priority;
+            description "";
+        }
+
+        leaf actor_sys_prio {
+            type lacp:actor-priority;
+            description "";
+        }
+
+        leaf actor_sys_id {
+            type lacp:actor-system-id;
+            description "";
+        }
+
+        leaf actor_key {
+            type lacp:actor-key;
+            description "";
+        }
+
+        leaf actor_port_prio {
+            type lacp:actor-port-priority;
+            description "";
+        }
+
+        leaf actor_port_id {
+            type lacp:actor-port-id;
+            description "";
+        }
+
+        leaf actor_state {
+            type lacp:actor-state;
+            description "";
+        }
+
+        leaf partner_sys_prio {
+            type lacp:parter-system-priority;
+            description "";
+        }
+
+        leaf partner_sys_id {
+            type lacp:partner-system-id;
+            description "";
+        }
+
+        leaf partner_key {
+            type lacp:partner-key;
+            description "";
+        }
+
+        leaf partner_port_prio {
+            type lacp:partner-port-priority;
+            description "";
+        }
+
+        leaf partner_port_id {
+            type lacp:partner-port-id;
+            description "";
+        }
+
+        leaf partner_state {
+            type lacp:partner-state;
+            description "";
+        }
+
+        leaf ether {
+            type types:mac-address;
+            description "";
+        }
+
+        leaf mtu {
+            type string;
+            description "";
+        }
+
+        leaf up {
+            type boolean;
+            description "";
+        }
+
+        leaf speed {
+            type string;
+            description "";
+        }
+
+        leaf age {
+            type string;
+            description "";
+        }
+
+        leaf duplex {
+            type string;
+            description "";
+        }
+
+        leaf rx_packets {
+            type if:packets;
+            description "";
+        }
+
+        leaf rx_errors {
+            type if:packets;
+            description "";
+        }
+
+        leaf rx_dropped {
+            type if:packets;
+            description "";
+        }
+
+        leaf tx_packets {
+            type if:packets;
+            description "";
+        }
+
+        leaf tx_errors {
+            type if:packets;
+            description "";
+        }
+
+        leaf tx_dropped {
+            type if:packets;
+            description "";
+        }
+    }
+}

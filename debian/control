@@ -66,3 +66,19 @@ Depends: ${misc:Depends}, ${yang:Depends},
  vplane-config (>> 2.19)
 Description: vyatta-op-show-lacp-v1 module
  Operational mode integration for viewing LACP state information
+
+Package: vyatta-lacp-v1-yang
+Architecture: all
+Depends: ${misc:Depends}, ${yang:Depends},
+ libteam-utils (>= 1.11-1vyatta18),
+ vplane-config (>> 2.19)
+Description: vyatta-lacp-v1 module
+ Config module for lacp
+
+Package: vyatta-lacp-types-v1-yang
+Architecture: all
+Depends: ${misc:Depends}, ${yang:Depends},
+ libteam-utils (>= 1.11-1vyatta18),
+ vplane-config (>> 2.19)
+Description: vyatta-lacp-v1 module
+ Supporting yang types for LACP
