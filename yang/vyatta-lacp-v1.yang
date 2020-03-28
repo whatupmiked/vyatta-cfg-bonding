@@ -74,6 +74,11 @@ module vyatta-lacp-v1 {
             description "";
         }
 
+        leaf age {
+            type string;
+            description "";
+        }
+
         leaf rx_packets {
             type if:packets;
             description "";
