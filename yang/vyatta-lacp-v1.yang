@@ -64,6 +64,16 @@ module vyatta-lacp-v1 {
             description "";
         }
 
+        leaf duplex {
+            type string;
+            description "";
+        }
+
+        leaf up {
+            type boolean;
+            description "";
+        }
+
         leaf rx_packets {
             type if:packets;
             description "";
@@ -104,7 +114,7 @@ module vyatta-lacp-v1 {
             type string;
         }
 
-        leaf lacp {
+        leaf dp_lacp {
             description "Is LACP running on this lag";
             type boolean;
         }
@@ -171,7 +181,7 @@ module vyatta-lacp-v1 {
             description "";
         }
 
-        leaf primary {
+        leaf dp_primary {
             type boolean;
             description "";
         }
