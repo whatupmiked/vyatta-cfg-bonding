@@ -49,6 +49,51 @@ module vyatta-lacp-v1 {
     }
 
     grouping lacp-lag-state {
+        leaf ether {
+            type types:mac-address;
+            description "";
+        }
+
+        leaf mtu {
+            type string;
+            description "";
+        }
+
+        leaf speed {
+            type string;
+            description "";
+        }
+
+        leaf rx_packets {
+            type if:packets;
+            description "";
+        }
+
+        leaf rx_errors {
+            type if:packets;
+            description "";
+        }
+
+        leaf rx_dropped {
+            type if:packets;
+            description "";
+        }
+
+        leaf tx_packets {
+            type if:packets;
+            description "";
+        }
+
+        leaf tx_errors {
+            type if:packets;
+            description "";
+        }
+
+        leaf tx_dropped {
+            type if:packets;
+            description "";
+        }
+
         leaf mode {
             description "";
             type string;
