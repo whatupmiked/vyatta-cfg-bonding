@@ -34,7 +34,7 @@ module vyatta-lacp-types-v1 {
     }
 
     typedef lacp-port-id {
-        type types:port;
+        type uint16;
         description "An LACP port id in the range 0 - 65535";
     }
 
