@@ -26,15 +26,15 @@ module vyata-op-show-lacp-v1 {
         SPDX-License-Identifier: GPL-2.0-only
 
         The YANG module for vyatta-op-show-lacp-v1
-        Defined the 'lacp' level under the top level 'show' for operational CLI";
+        Defines the 'lacp' node under 'show' for operational CLI";
 
-    revision 2020-02-24 {
+    revision 2020-03-29 {
         description "Initial version";
     }
 
     opd:augment /show:show {
         opd:command lacp {
-            opd:help "Show LACP information";
+            opd:help "Show 802.1AX LACP information";
 
             opd:command detail {
                 opd:help "Show detailed LACP information";

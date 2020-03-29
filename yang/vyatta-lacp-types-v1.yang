@@ -34,7 +34,7 @@ module vyatta-lacp-types-v1 {
     }
 
     typedef lacp-port-id {
-        type uint16;
+        type types:port;
         description "An LACP port id in the range 0 - 65535";
     }
 
@@ -52,7 +52,7 @@ module vyatta-lacp-types-v1 {
         type uint8 {
         	range "1 .. 2";
 		}
-        description "The LACP Version number";
+        description "The 802.1AX LACP Version number";
     }
 
     typedef lacp-state {
@@ -60,87 +60,106 @@ module vyatta-lacp-types-v1 {
 			length "8";
 			pattern "[\*E][\*F][\*D][\*C][\*S][\*G][sL][AP]";
 		}
-        description "A summary of the LACP port state";
+        description "A summary of the LACP port state where
+        E = Expired, F = Defaulted, D = Distributing, C = Collecting
+        S = Synchronized, G = Aggregating, s = Short Timeout, L = Long Timeout
+        A = Active, P = Passive";
+    }
+
+    typedef lacp-periodic-time {
+        type uint8 {
+            range "1 | 30";
+            description "The number of seconds between periodic transmissions
+            of LACPDUs as defined in 802.1AX specification.";
+        }
+    }
+
+    typedef lacp-timeout {
+        type uint8 {
+            range "3 | 90";
+            description "The number of seconds before invalidating recieved
+            LACPDU information. Represents 3 * lacp periodic time.";
     }
 
     typedef system-priority {
         type lacp-priority;
-        description "The LACP system priority";
+        description "The 802.1AX LACP system priority.";
     }
 
     typedef port-priority {
         type lacp-priority;
-        description "The LACP port priority";
+        description "The 802.1AX LACP system priority represented for the
+        port.";
     }
 
     typedef actor-priority {
         type lacp-priority;
-        description "The LACP priority for the actor system";
+        description "The 802.1AX LACP priority for the actor system.";
     }
 
     typedef actor-key {
         type lacp-key;
-        description "The LACP key for the actor system";
+        description "The 802.1AX LACP key for the actor system.";
     }
 
     typedef actor-port-id {
         type lacp-port-id;
-        description "The LACP port id for the actor system";
+        description "The 802.1AX LACP port id for the actor system.";
     }
 
     typedef actor-port-priority {
         type lacp-priority;
-        description "The LACP port priority for the actor system";
+        description "The 802.1AX LACP port priority for the actor system.";
     }
 
     typedef actor-state {
         type lacp-state;
-        description "The LACP state for the actor system";
+        description "The summarized 802.1AX LACP state for the actor port.";
     }
 
     typedef actor-system-id {
         type lacp-system-id;
-        description "The LACP system id for the actor system";
+        description "The 802.1AX LACP system id for the actor system.";
     }
 
     typedef actor-system-priority {
         type system-priority;
-        description "The LACP system priority for the actor system";
+        description "The 802.1AX LACP system priority for the actor system.";
     }
 
     typedef partner-priority {
         type lacp-priority;
-        description "The LACP priority for the partner system";
+        description "The 802.1AX LACP priority for the partner system.";
     }
 
     typedef partner-key {
         type lacp-key;
-        description "The LACP key for the partner system";
+        description "The 802.1AX LACP key for the partner port.";
     }
 
     typedef partner-port-id {
         type lacp-port-id;
-        description "The LACP port id for the partner system";
+        description "The 802.1AX LACP port id for the partner port.";
     }
 
     typedef partner-port-priority {
         type lacp-priority;
-        description "The LACP port priority for the partner system";
+        description "The 802.1AX LACP port priority for the partner port.";
     }
 
     typedef partner-state {
         type lacp-state;
-        description "The LACP state for the partner system";
+        description "The summarized 802.1AX LACP state for the partner port.";
     }
 
     typedef partner-system-id {
         type lacp-system-id;
-        description "The LACP system id for the partner system";
+        description "The 802.1AX LACP system id for the partner system.";
     }
 
     typedef partner-system-priority {
         type system-priority;
-        description "The LACP system priority for the partner system";
+        description "The 802.1AX LACP system priority for the partner system.";
     }
 
 }
