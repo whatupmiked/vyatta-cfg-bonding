@@ -34,7 +34,7 @@ module vyatta-lacp-v1 {
     augment /if:interfaces {
         container lacp-lags-state {
             config false;
-            configd:get-state "show_lacp --json";
+            configd:get-state "lacp-state";
             description "Operational state for LACP lags";
 
             list lags {
