@@ -15,7 +15,7 @@ __version__ = "1.0"
 
 __LACP_HDR__ = "E = Expired, F = Defaulted, D = Distributing, " + \
                "C = Collecting, S = Synchonization\n" + \
-               "G = Aggregating, A = Active, P = Passive," + \
+               "G = Aggregating, A = Active, P = Passive, " + \
                "s = Short Timeout, L = Long Timeout"
 
 class GenericJsonEncoder(json.JSONEncoder):
@@ -283,6 +283,8 @@ def lag_printer(lag, cmd):
         ctrl = "{: <16} Mode: {: <12} ".format(lag['name'], lag['mode'])
         ctrl += "LACP: {: <5} Hash: {: <27}".format(str(lag['active']), \
                                                    lag['hash_alg'])
+        print("Dataplane {}".format(lag['name']))
+        print("="*79)
         print(ctrl)
         print("-"*(16+12+5+27))
         for port in lag['slaves']:
