@@ -280,9 +280,9 @@ def lag_printer(lag, cmd):
             print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *p_state))
             print()
         #ctrl_state_print
-        ctrl = "{: <16} Mode: {: <12} ".format(self.name, self.mode)
-        ctrl += "LACP: {: <5} Hash: {: <27}".format(str(self.active), \
-                                                   self.hash_alg)
+        ctrl = "{: <16} Mode: {: <12} ".format(lag['name'], lag['mode'])
+        ctrl += "LACP: {: <5} Hash: {: <27}".format(str(lag['active']), \
+                                                   lag['hash_alg'])
         print(ctrl)
         print("-"*(16+12+5+27))
         for port in lag['slaves']:
@@ -295,6 +295,36 @@ def lag_printer(lag, cmd):
                 state += "Primary"
             print(state)
         print()
+    if cmd == 'statistics':
+        print(__LACP_HDR__)
+        print("="*79)
+        for port in lag:
+            if 'up' in port:
+                link = "Up"
+            else:
+                link = "Down"
+            state = "{: <16} ".format(port['name'])
+            state += "{: <4} {}/{} Last Change: {}\n".format(link, \
+                                                             port['speed'], \
+                                                             port['duplex'], port['age'])
+            state += "{: <16} Master: {: <16} ".format("", port['dp_master'])
+            state += "Actor: {: <10} Partner: {: <10}".format(port['actor_state'], \
+                                                              port['partner_state'])
+            rx_stats = "{: <16} {: <10}".format("", "RX")
+            rx_stats += " {: <16} {: <16} {: <16}".format(port['rx_packets'],
+                                                          port['rx_errors'],
+                                                          port['rx_dropped'])
+            tx_stats = "{: <16} {: <10}".format("", "TX")
+            tx_stats += " {: <16} {: <16} {: <16}".format(port['tx_packets'],
+                                                          port['tx_errors'],
+                                                          port['tx_dropped'])
+            print(state)
+            print("{: <16} {: <10} {: <16} {: <16} {: <16}".format("", "", \
+                                                                   "Pkts", \
+                                                                   "Errors", \
+                                                                   "Drops"))
+            print(rx_stats)
+            print(tx_stats)
 
 def set_iface(ifconfig, var):
     '''

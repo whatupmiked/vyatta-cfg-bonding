@@ -27,7 +27,7 @@ module vyata-op-show-lacp-v1 {
             }
             opd:command statistics {
                 opd:help "Show LACP statistics";
-                opd:on-enter "/opt/vyatta/bin/show_lacp --stats";
+                opd:on-enter "/opt/vyatta/bin/show_lacp --configd --stats";
                 opd:privileged true;
             }
         }
