@@ -475,6 +475,9 @@ def main():
         if args.detail:
             for lag in tree['lags']:
                 lag_printer(lag, 'detail')
+        if args.statistics:
+            for lag in tree['lags']:
+                lag_printer(lag, 'statistics')
         return
 
     # show-lacp-detail
