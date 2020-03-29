@@ -69,16 +69,17 @@ module vyatta-lacp-types-v1 {
     typedef lacp-periodic-time {
         type uint8 {
             range "1 | 30";
-            description "The number of seconds between periodic transmissions
-            of LACPDUs as defined in 802.1AX specification.";
         }
+        description "The number of seconds between periodic transmissions
+        of LACPDUs as defined in 802.1AX specification.";
     }
 
     typedef lacp-timeout {
         type uint8 {
             range "3 | 90";
-            description "The number of seconds before invalidating recieved
-            LACPDU information. Represents 3 * lacp periodic time.";
+        }
+        description "The number of seconds before invalidating recieved
+        LACPDU information. Represents 3 * lacp periodic time.";
     }
 
     typedef system-priority {
