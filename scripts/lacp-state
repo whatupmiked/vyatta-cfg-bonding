@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-""" Python3 module for collecting and displaying Vyatta vRouter
-LACP state information
+"""
+Python3 module for collecting LACP state information
 """
 import json
 import subprocess
@@ -9,10 +9,25 @@ import datetime
 import argparse
 from vplaned import Controller
 
-__year__    = "2020"
 __version__ = "1.0"
+__author__ = "Michael Doyle"
+__license__ = """
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License version 2 as
+ published by the Free Software Foundation.
 
-class GenericJsonEncoder(json.JSONEncoder):
+ This program is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ General Public License for more details.
+
+ Date: March 2020
+ Description: Script to display bonding information
+
+ SPDX-License-Identifier: GPL-2.0-only
+"""
+
+class GenericJSONEncoder(json.JSONEncoder):
     """
     A generic json Encoder
     """
@@ -37,11 +52,12 @@ class Interface:
         self.tx_dropped = set_iface(ifconfig, "tx_dropped")
 
     def __repr__(self):
-        return "{}".format(*[self.name, self.ether, self.mtu, self.up, \
+        return "{}".format(*[self.__class__.__name__, '(', \
+                             self.name, self.ether, self.mtu, self.up, \
                              self.speed, self.age, self.duplex, \
                              self.rx_packets, self.rx_errors, \
                              self.rx_dropped, self.tx_packets, \
-                             self.tx_errors, self.tx_dropped])
+                             self.tx_errors, self.tx_dropped, ')'])
 
 class Lag(Interface):
     '''An LACP Master Interface Object'''
@@ -76,6 +92,12 @@ class Lag(Interface):
         else:
             self.slaves = [LagPort(ifconfigs[x["ifname"]], x, self.name, "") \
                                 for x in lag["slaves"]]
+    def __repr__(self):
+        return "{}".format(*[self.__class__.__name__, '(', \
+                             Interface.__repr__(self), self.mode, self.lacp, \
+                             self.hash_alg, self.active, self.team_mode, \
+                             self.controller, self.fast_rate, self.link_watch, \
+                             self.tx_hash, self.sys_prio, self.slaves, ')'])
 
 class LagPort(Interface):
     '''An LACP Slave Port Object'''
@@ -125,6 +147,18 @@ class LagPort(Interface):
             self.partner_port_prio = "NA"
             self.partner_port_id = "NA"
             self.partner_state = "NA"
+    def __repr__(self):
+        return "{}".format(*[self.__class__.__name__, '(', \
+                             Interface.__repr__(self), self.prio, \
+                             self.version, self.dp_active, self.dp_primary, \
+                             self.dp_master, self.dp_lacp, \
+                             self.actor_sys_prio, self.actor_sys_id, \
+                             self.actor_key, self.actor_port_prio, \
+                             self.actor_port_id, self.actor_state, \
+                             self.partner_sys_prio, self.partner_sys_id, \
+                             self.partner_key, self.partner_port_prio, \
+                             self.partner_port_id, self.partner_state, \
+                             ')'])
 
 def set_iface(ifconfig, var):
     '''
@@ -188,7 +222,8 @@ def get_kernel(intf, val):
     '''
     sys_path = "/sys/class/net/"+intf+"/"
     valid_if = False
-    if os.path.exists(sys_path): valid_if = True
+    if os.path.exists(sys_path):
+        valid_if = True
     if valid_if:
         if val in os.listdir(sys_path):
             sys_path += val
@@ -261,7 +296,7 @@ def main():
                     ifcfgs[slave_name] = slave_name
             lags.append(Lag(ifcfgs, lag))
     if args.json:
-        print(json.dumps({'lags' : lags}, cls=GenericJsonEncoder))
+        print(json.dumps({'lags' : lags}, cls=GenericJSONEncoder))
         return
 
 if __name__ == "__main__":
