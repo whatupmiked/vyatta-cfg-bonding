@@ -22,7 +22,7 @@ module vyata-op-show-lacp-v1 {
 
             opd:command detail {
                 opd:help "Show detailed LACP information";
-                opd:on-enter "/opt/vyatta/bin/show_lacp --detail";
+                opd:on-enter "/opt/vyatta/bin/show_lacp --configd --detail";
                 opd:privileged true;
             }
             opd:command statistics {

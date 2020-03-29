@@ -8,6 +8,7 @@ import os
 import datetime
 import argparse
 from vplaned import Controller
+from vyatta import configd
 
 __year__    = "2020"
 __version__ = "1.0"
@@ -233,6 +234,54 @@ class LagPort(Interface):
         print(rx_stats)
         print(tx_stats)
 
+def lag_printer(lag, cmd):
+    '''
+    The printing function for the json recieved from configd
+    '''
+    if cmd == 'detail':
+        print("Control plane {}".format(lag.name))
+        print("="*79)
+        if 'fast_rate' in lag:
+            timeout = "Fast (1s)"
+        else:
+            timeout = "Slow (30s)"
+        cfg = "{: <16} Timeout: {: <11} ".format(lag['name'], timeout)
+        cfg += "Hash: {} ({})".format(lag['team_mode'], \
+                                        ", ".join(lag['tx_hash']))
+        print(cfg)
+        hdr = ["Interface", "Speed/Duplex", "MAC", "Link", "Port-prio"]
+        a_hdr = ["actor-id", "prio", "key", "state"]
+        p_hdr = ["partner-id", "prio", "key", "state"]
+        state = [str(lag['name']), str(lag['speed']) + "/" + str(lag['duplex']), \
+                 str(lag['ether']), str(lag['up']), str(lag['prio'])]
+        a_state = [str(lag['actor_sys_id']), str(lag['actor_sys_prio']), \
+                   str(lag['actor_key']), str(lag['actor_state'])]
+        p_state = [str(lag['partner_sys_id']), str(lag['partner_sys_prio']), \
+                   str(lag['partner_key']), str(lag['partner_state'])]
+        print("{: <16} {: <16} {: <18} {: <5} {: <9}".format(*hdr))
+        print("-"*(16+16+18+5+9))
+        print("{: <16} {: <16} {: <18} {: <5} {: <9}".format(*state))
+        print()
+        print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *a_hdr))
+        print("{: <16} {}".format("", "-"*(18+8+8+8)))
+        print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *a_state))
+        print()
+        print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *p_hdr))
+        print("{: <16} {}".format("", "-"*(18+8+8+8)))
+        print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *p_state))
+        print()
+        ###
+        print("Dataplane {}".format(lag['name'])) #
+        print("="*79) #
+        state = "{: <2} {: <16} ".format("", lag['name'])
+        state += "{: <16} ".format("Active: " + str(lag['dp_active']))
+        if 'dp_lacp' in lag:
+            state += "Actor: {} Partner: {} ".format(lag['dp_actor_state'], \
+                                                    lag['dp_partner_state'])
+        if 'dp_primary' in lag:
+            state += "Primary"
+        print(state)
+
 def set_iface(ifconfig, var):
     '''
     Set the interface variable from either the dataplane
@@ -338,6 +387,7 @@ def main():
     parser.add_argument("-s", "--stats", help="Show LACP statistics", \
             action="store_true")
     parser.add_argument("-j", "--json", action="store_true", default=False)
+    parser.add_argument("-c", "--configd", action="store_true", default=False)
     args = parser.parse_args()
     # Form a dictionary comprehension of the dataplane
     # ifconfig where lag['ifname'] is the key and use this
@@ -375,6 +425,13 @@ def main():
     if args.json:
         print(json.dumps({'lags' : lags}, cls=GenericJsonEncoder))
         return
+    if args.configd:
+        client = configd.Client()
+        tree = client.tree_get_full_dict('interfaces lacp-lags-state')
+        if args.detail:
+            for lag in tree['lags']:
+                lag_printer(lag, 'detail')
+
     # show-lacp-detail
     if args.detail:
         for lag in lags:
