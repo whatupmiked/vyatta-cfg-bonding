@@ -2,6 +2,7 @@
 """ Python3 module for collecting and displaying Vyatta vRouter
 LACP state information
 """
+import argparse
 from vyatta import configd
 
 __year__    = "2020"
