@@ -239,7 +239,8 @@ def lag_printer(lag, cmd):
     The printing function for the json recieved from configd
     '''
     if cmd == 'detail':
-        print("Control plane {}".format(lag.name))
+        #team_cfg_print
+        print("Control plane {}".format(lag['name']))
         print("="*79)
         if 'fast_rate' in lag:
             timeout = "Fast (1s)"
@@ -249,38 +250,51 @@ def lag_printer(lag, cmd):
         cfg += "Hash: {} ({})".format(lag['team_mode'], \
                                         ", ".join(lag['tx_hash']))
         print(cfg)
-        hdr = ["Interface", "Speed/Duplex", "MAC", "Link", "Port-prio"]
-        a_hdr = ["actor-id", "prio", "key", "state"]
-        p_hdr = ["partner-id", "prio", "key", "state"]
-        state = [str(lag['name']), str(lag['speed']) + "/" + str(lag['duplex']), \
-                 str(lag['ether']), str(lag['up']), str(lag['prio'])]
-        a_state = [str(lag['actor_sys_id']), str(lag['actor_sys_prio']), \
-                   str(lag['actor_key']), str(lag['actor_state'])]
-        p_state = [str(lag['partner_sys_id']), str(lag['partner_sys_prio']), \
-                   str(lag['partner_key']), str(lag['partner_state'])]
-        print("{: <16} {: <16} {: <18} {: <5} {: <9}".format(*hdr))
-        print("-"*(16+16+18+5+9))
-        print("{: <16} {: <16} {: <18} {: <5} {: <9}".format(*state))
+        ### team_state_print
+        state = "{: <16} System Priority: ".format("")
+        state += "{: <5} MAC: {: <18}\n".format(lag['sys_prio'], lag['ether'])
+        state += "{: <16} Mode: {} Active: {: <5} ".format("", lag['mode'], \
+                                                        str(lag['active']))
+        print(state, '\n')
+        print(__LACP_HDR__, '\n')
+        for port in lag['slaves']:
+            hdr = ["Interface", "Speed/Duplex", "MAC", "Link", "Port-prio"]
+            a_hdr = ["actor-id", "prio", "key", "state"]
+            p_hdr = ["partner-id", "prio", "key", "state"]
+            state = [str(port['name']), str(port['speed']) + "/" + str(port['duplex']), \
+                     str(port['ether']), str(port['up']), str(port['prio'])]
+            a_state = [str(port['actor_sys_id']), str(port['actor_sys_prio']), \
+                       str(port['actor_key']), str(port['actor_state'])]
+            p_state = [str(port['partner_sys_id']), str(port['partner_sys_prio']), \
+                       str(port['partner_key']), str(port['partner_state'])]
+            print("{: <16} {: <16} {: <18} {: <5} {: <9}".format(*hdr))
+            print("-"*(16+16+18+5+9))
+            print("{: <16} {: <16} {: <18} {: <5} {: <9}".format(*state))
+            print()
+            print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *a_hdr))
+            print("{: <16} {}".format("", "-"*(18+8+8+8)))
+            print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *a_state))
+            print()
+            print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *p_hdr))
+            print("{: <16} {}".format("", "-"*(18+8+8+8)))
+            print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *p_state))
+            print()
+        #ctrl_state_print
+        ctrl = "{: <16} Mode: {: <12} ".format(self.name, self.mode)
+        ctrl += "LACP: {: <5} Hash: {: <27}".format(str(self.active), \
+                                                   self.hash_alg)
+        print(ctrl)
+        print("-"*(16+12+5+27))
+        for port in lag['slaves']:
+            state = "{: <2} {: <16} ".format("", port['name'])
+            state += "{: <16} ".format("Active: " + str(port['dp_active']))
+            if 'dp_lacp' in port:
+                state += "Actor: {} Partner: {} ".format(port['dp_actor_state'], \
+                                                        port['dp_partner_state'])
+            if 'dp_primary' in port:
+                state += "Primary"
+            print(state)
         print()
-        print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *a_hdr))
-        print("{: <16} {}".format("", "-"*(18+8+8+8)))
-        print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *a_state))
-        print()
-        print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *p_hdr))
-        print("{: <16} {}".format("", "-"*(18+8+8+8)))
-        print("{: <16} {: <18} {: <8} {: <8} {: <8}".format("", *p_state))
-        print()
-        ###
-        print("Dataplane {}".format(lag['name'])) #
-        print("="*79) #
-        state = "{: <2} {: <16} ".format("", lag['name'])
-        state += "{: <16} ".format("Active: " + str(lag['dp_active']))
-        if 'dp_lacp' in lag:
-            state += "Actor: {} Partner: {} ".format(lag['dp_actor_state'], \
-                                                    lag['dp_partner_state'])
-        if 'dp_primary' in lag:
-            state += "Primary"
-        print(state)
 
 def set_iface(ifconfig, var):
     '''
@@ -427,10 +441,11 @@ def main():
         return
     if args.configd:
         client = configd.Client()
-        tree = client.tree_get_full_dict('interfaces lacp-lags-state')
+        tree = client.tree_get_full_dict('interfaces lacp-lags-state lags')
         if args.detail:
             for lag in tree['lags']:
                 lag_printer(lag, 'detail')
+        return
 
     # show-lacp-detail
     if args.detail:
