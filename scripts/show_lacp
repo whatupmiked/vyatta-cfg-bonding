@@ -291,7 +291,7 @@ def lag_printer(lag, cmd):
             if 'dp_lacp' in port:
                 state += "Actor: {} Partner: {} ".format(port['dp_actor_state'], \
                                                         port['dp_partner_state'])
-            if 'dp_primary' in port:
+            if port['dp_primary']:
                 state += "Primary"
             print(state)
         print()
