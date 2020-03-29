@@ -73,7 +73,7 @@ Depends: ${misc:Depends}, ${yang:Depends},
  libteam-utils (>= 1.11-1vyatta18),
  vplane-config (>> 2.19)
 Description: vyatta-lacp-v1 module
- Config module for lacp
+ Configd integration for LACP state information
 
 Package: vyatta-lacp-types-v1-yang
 Architecture: all
@@ -81,4 +81,4 @@ Depends: ${misc:Depends}, ${yang:Depends},
  libteam-utils (>= 1.11-1vyatta18),
  vplane-config (>> 2.19)
 Description: vyatta-lacp-v1 module
- Supporting yang types for LACP
+ Supporting yang types for LACP state information
