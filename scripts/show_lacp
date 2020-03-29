@@ -298,7 +298,7 @@ def lag_printer(lag, cmd):
     if cmd == 'statistics':
         print(__LACP_HDR__)
         print("="*79)
-        for port in lag:
+        for port in lag['slaves']:
             if 'up' in port:
                 link = "Up"
             else:
@@ -475,7 +475,7 @@ def main():
         if args.detail:
             for lag in tree['lags']:
                 lag_printer(lag, 'detail')
-        if args.statistics:
+        if args.stats:
             for lag in tree['lags']:
                 lag_printer(lag, 'statistics')
         return
