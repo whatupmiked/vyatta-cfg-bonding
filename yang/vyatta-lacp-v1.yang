@@ -35,7 +35,6 @@ module vyatta-lacp-v1 {
         container lacp-lags-state {
             config false;
             configd:get-state "/opt/vyatta/bin/lacp-state -j";
-            priveleged true;
             description "Operational state for LACP lags";
 
             list lags {
