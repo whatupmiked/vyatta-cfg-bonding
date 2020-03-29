@@ -118,7 +118,7 @@ def lag_stats_printer(lag):
         tx_stats = "{: <16} {: <10}".format("", "TX")
         tx_stats += " {: <16} {: <16} {: <16}".format(*tx_state)
         print(state)
-        print("{: <16} {: <10} {: <16} {: <16} {: <16}".format(*pkt_hdr)
+        print("{: <16} {: <10} {: <16} {: <16} {: <16}".format(*pkt_hdr))
         print(rx_stats)
         print(tx_stats)
 
