@@ -63,7 +63,7 @@ module vyatta-lacp-v1 {
 
     grouping lacp-lag-state {
         leaf ether {
-            type string;
+            type types:mac-address;
             description "";
         }
 
@@ -285,7 +285,7 @@ module vyatta-lacp-v1 {
         }
 
         leaf ether {
-            type string;
+            type types:mac-address;
             description "";
         }
 
