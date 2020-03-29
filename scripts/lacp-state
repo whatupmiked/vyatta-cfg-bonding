@@ -182,6 +182,9 @@ def set_iface(ifconfig, var):
             use_kernel = True
     if use_kernel:
         if_attr = get_kernel(name, var)
+    if 'ether' = var:
+        # Dataplane collapses 00 octets to 0 so use kernel address
+        if_attr = get_kernel(name, 'address')
     return if_attr
 
 def lacp_state(state):
