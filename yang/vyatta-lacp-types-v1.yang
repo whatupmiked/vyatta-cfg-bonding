@@ -60,10 +60,10 @@ module vyatta-lacp-types-v1 {
 			length "8";
 			pattern "[\*E-][\*F-][\*D-][\*C-][\*S-][\*G-][sL-][AP-]";
 		}
-        description "A summary of the LACP port state where
+        description "A summary of the LACP port state communited in LACPDU where
         E = Expired, F = Defaulted, D = Distributing, C = Collecting
         S = Synchronized, G = Aggregating, s = Short Timeout, L = Long Timeout
-        A = Active, P = Passive";
+        A = Active, P = Passive, * = Flag not set, - = No state detected";
     }
 
     typedef lacp-periodic-time {

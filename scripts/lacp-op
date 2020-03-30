@@ -26,7 +26,8 @@ __license__ = """
 __LACP_HDR__ = "E = Expired, F = Defaulted, D = Distributing, " + \
                "C = Collecting, S = Synchonization\n" + \
                "G = Aggregating, A = Active, P = Passive, " + \
-               "s = Short Timeout, L = Long Timeout"
+               "s = Short Timeout, L = Long Timeout\n* = Flag not set" + \
+               ", - = No state detected"
 
 def lag_detail_printer(lag):
     '''
