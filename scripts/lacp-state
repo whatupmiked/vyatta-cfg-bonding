@@ -140,13 +140,13 @@ class LagPort(Interface):
             self.actor_key = 0
             self.actor_port_prio = 0
             self.actor_port_id = 0
-            self.actor_state = "---NA---"
+            self.actor_state = "--------"
             self.partner_sys_prio = 0
             self.partner_sys_id = "00:00:00:00:00:00"
             self.partner_key = 0
             self.partner_port_prio = 0
             self.partner_port_id = 0
-            self.partner_state = "---NA---"
+            self.partner_state = "--------"
     def __repr__(self):
         return "{}".format(*[self.__class__.__name__, '(', \
                              Interface.__repr__(self), self.prio, \

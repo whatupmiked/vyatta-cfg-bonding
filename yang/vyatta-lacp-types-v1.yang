@@ -58,7 +58,7 @@ module vyatta-lacp-types-v1 {
     typedef lacp-state {
         type string {
 			length "8";
-			pattern "[\*E][\*F][\*D][\*C][\*S][\*G][sL][AP]";
+			pattern "[\*E-][\*F-][\*D-][\*C-][\*S-][\*G-][sL-][AP-]";
 		}
         description "A summary of the LACP port state where
         E = Expired, F = Defaulted, D = Distributing, C = Collecting
