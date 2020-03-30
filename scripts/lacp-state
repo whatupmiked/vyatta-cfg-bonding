@@ -134,19 +134,19 @@ class LagPort(Interface):
             self.partner_port_id = partner["port"]
             self.partner_state = lacp_state(partner["state"])
         else:
-            self.prio = "NA"
-            self.actor_sys_prio = "NA"
-            self.actor_sys_id = "NA"
-            self.actor_key = "NA"
-            self.actor_port_prio = "NA"
-            self.actor_port_id = "NA"
-            self.actor_state = "NA"
-            self.partner_sys_prio = "NA"
-            self.partner_sys_id = "NA"
-            self.partner_key = "NA"
-            self.partner_port_prio = "NA"
-            self.partner_port_id = "NA"
-            self.partner_state = "NA"
+            self.prio = 0
+            self.actor_sys_prio = 0
+            self.actor_sys_id = "00:00:00:00:00:00"
+            self.actor_key = 0
+            self.actor_port_prio = 0
+            self.actor_port_id = 0
+            self.actor_state = "---NA---"
+            self.partner_sys_prio = 0
+            self.partner_sys_id = "00:00:00:00:00:00"
+            self.partner_key = 0
+            self.partner_port_prio = 0
+            self.partner_port_id = 0
+            self.partner_state = "---NA---"
     def __repr__(self):
         return "{}".format(*[self.__class__.__name__, '(', \
                              Interface.__repr__(self), self.prio, \
